@@ -25,9 +25,9 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.ACCESS }} # Referencing the environment secret
-          aws-secret-access-key: ${{ secrets.SECRETE }} # Referencing the environment secret
-          aws-region: us-east-1 # Replace with your AWS region  
+          role-to-assume: arn:aws:iam::471112919332:role/github  # Replace with your role ARN
+          aws-region: us-east-1 # Or your desired region
+  
 
       - name: 🔧 Set up Terraform
         uses: hashicorp/setup-terraform@v3
