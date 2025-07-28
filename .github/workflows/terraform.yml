@@ -4,15 +4,18 @@ on:
   workflow_dispatch:        # Manual trigger from GitHub UI
   push:
     branches:
-      - main                # Trigger on push to main branch
+      - main              # Trigger on push to main branch
 
 # env:
-#   TF_DIR: ./Day-2-introduction   # 📁 Terraform directory path
+#   TF_DIR: ./Day-2-introduction    # 📁 Terraform directory path
 
 jobs:
   terraform:
     name: Terraform Workflow
     runs-on: ubuntu-latest
+    permissions: # <--- ADD THIS BLOCK
+      id-token: write # This is crucial for OIDC authentication
+      contents: read  # Required for actions/checkout to get your code
 
     # defaults:
     #   run:
@@ -25,9 +28,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::471112919332:role/github  # Replace with your role ARN
+          role-to-assume: arn:aws:iam::471112919332:role/github # Your role ARN
           aws-region: us-east-1 # Or your desired region
-  
 
       - name: 🔧 Set up Terraform
         uses: hashicorp/setup-terraform@v3
@@ -43,4 +45,4 @@ jobs:
       - name: 🚀 Terraform Apply
         run: terraform apply -auto-approve
         env:
-          TF_LOG: INFO                # Optional: debug logs
+          TF_LOG: INFO              # Optional: debug logs
